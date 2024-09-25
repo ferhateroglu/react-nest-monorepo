@@ -1,30 +1,29 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { MongooseModule } from "@nestjs/mongoose";
-import { ChatbotController } from "./presentation/controllers/chatbot.controller";
-import { ChatbotService } from "./application/services/chatbot.service";
 import { MongoDbSessionRepository } from "./infrastructure/repositories/mongodb-session.repository";
-import { Session, SessionSchema } from "./infrastructure/database/schemas/session.schema";
-import configuration from "./config/configuration";
+import { DatabaseModule } from "./infrastructure/database/database.module";
+
+// Controllers
+import { AppController } from "@presentation/controllers/app.controller";
+import { ChatbotController } from "@presentation/controllers/chatbot.controller";
+
+// Services
+import { AppService } from "@application/services/app.service";
+import { AssetService } from "@application/services/asset.service";
+import { ChatbotService } from "@application/services/chatbot.service";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration],
-      envFilePath: `.env.${process.env.NODE_ENV} || .dev`,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>("database.uri"),
-      }),
-      inject: [ConfigService],
-    }),
-    MongooseModule.forFeature([{ name: Session.name, schema: SessionSchema }]),
+    DatabaseModule,
   ],
-  controllers: [ChatbotController],
+  controllers: [AppController, ChatbotController],
   providers: [
+    AppService,
+    AssetService,
     ChatbotService,
     {
       provide: "ISessionRepository",

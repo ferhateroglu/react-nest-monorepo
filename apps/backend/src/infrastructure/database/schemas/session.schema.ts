@@ -1,6 +1,7 @@
+// src/infrastructure/database/schemas/session.schema.ts
+
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
-import { Question } from "../../../domain/value-objects/question.vo";
 
 export type SessionDocument = Session & Document;
 
@@ -10,12 +11,12 @@ export class Session {
   id: string;
 
   @Prop({ type: [{ text: String }], required: true })
-  questions: Question[];
+  questions: { text: string }[];
 
-  @Prop({ type: [String], required: true })
+  @Prop({ type: [String], default: [] })
   answers: string[];
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: 0 })
   currentQuestionIndex: number;
 
   @Prop({ required: true })
