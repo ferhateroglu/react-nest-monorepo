@@ -3,12 +3,12 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ISessionRepository } from "../../domain/repositories/session.repository.interface";
 import { Session as SessionEntity } from "../../domain/entities/session.entity";
-import { Session, SessionDocument } from "../database/schemas/session.schema";
+import { Session } from "../database/schemas/session.schema";
 import { Question } from "../../domain/value-objects/question.vo";
 
 @Injectable()
 export class MongoDbSessionRepository implements ISessionRepository {
-  constructor(@InjectModel(Session.name) private sessionModel: Model<SessionDocument>) {}
+  constructor(@InjectModel(Session.name) private sessionModel: Model<Session>) {}
 
   async create(session: SessionEntity): Promise<SessionEntity> {
     const createdSession = new this.sessionModel(session.toJSON());
@@ -28,7 +28,7 @@ export class MongoDbSessionRepository implements ISessionRepository {
     return this.mapToEntity(updatedSession);
   }
 
-  private mapToEntity(document: SessionDocument): SessionEntity {
+  private mapToEntity(document: Session): SessionEntity {
     return new SessionEntity(
       document.id,
       document.questions.map((q) => new Question(q.text)),

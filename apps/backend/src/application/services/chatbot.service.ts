@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { ISessionRepository } from "../../domain/repositories/session.repository.interface";
-import { Session } from "../../domain/entities/session.entity";
-import { Question } from "../../domain/value-objects/question.vo";
+import { ISessionRepository } from "@domain/repositories/session.repository.interface";
+import { Session } from "@domain/entities/session.entity";
+import { Question } from "@domain/value-objects/question.vo";
 import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
