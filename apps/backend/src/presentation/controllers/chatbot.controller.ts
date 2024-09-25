@@ -2,6 +2,7 @@ import { Controller, Post, Get, Body, Param } from "@nestjs/common";
 import { ChatbotService } from "../../application/services/chatbot.service";
 import { CreateSessionDto } from "../../application/dtos/create-session.dto";
 import { AnswerQuestionDto } from "../../application/dtos/answer-question.dto";
+import { Session } from "../../domain/entities/session.entity";
 
 @Controller("chatbot")
 export class ChatbotController {
@@ -13,10 +14,20 @@ export class ChatbotController {
     return { sessionId: session.id };
   }
 
-  @Get("sessions/:sessionId/questions")
+  @Get("sessions/:sessionId")
+  async getSession(@Param("sessionId") sessionId: string): Promise<{ session: Session }> {
+    const session = await this.chatbotService.getSession(sessionId);
+    return { session };
+  }
+
+  @Get("sessions/:sessionId/next-question")
   async getNextQuestion(@Param("sessionId") sessionId: string): Promise<{ question: string | null }> {
-    const question = await this.chatbotService.getNextQuestion(sessionId);
-    return { question: question ? question.text : null };
+    try {
+      const question = await this.chatbotService.getNextQuestion(sessionId);
+      return { question: question ? question.text : null };
+    } catch (error) {
+      return { question: null };
+    }
   }
 
   @Post("sessions/:sessionId/answers")

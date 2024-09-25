@@ -2,13 +2,14 @@
 
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { v4 as uuid } from "uuid";
 
 export type SessionDocument = Session & Document;
 
 @Schema()
 export class Session {
-  @Prop({ required: true })
-  id: string;
+  @Prop({ type: String, default: () => uuid(), unique: true })
+  _id: string;
 
   @Prop({ type: [{ text: String }], required: true })
   questions: { text: string }[];

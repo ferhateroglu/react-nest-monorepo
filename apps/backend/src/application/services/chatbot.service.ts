@@ -24,8 +24,12 @@ export class ChatbotService {
     private readonly sessionRepository: ISessionRepository,
   ) {}
   async createSession(): Promise<Session> {
-    const session = new Session(uuidv4(), this.questions, [], 0, new Date());
+    const session = new Session(this.questions, [], 0, new Date());
     return this.sessionRepository.create(session);
+  }
+
+  async getSession(sessionId: string): Promise<Session | null> {
+    return this.sessionRepository.findById(sessionId);
   }
 
   async getNextQuestion(sessionId: string): Promise<Question | null> {

@@ -2,12 +2,12 @@ import { Question } from "../value-objects/question.vo";
 
 export class Session {
   constructor(
-    public readonly id: string,
     public readonly questions: Question[],
     public readonly answers: string[],
     public currentQuestionIndex: number,
     public readonly startTime: Date,
     public endTime?: Date,
+    public readonly id?: string,
   ) {}
 
   public answerCurrentQuestion(answer: string): void {
@@ -31,7 +31,7 @@ export class Session {
 
   public toJSON() {
     return {
-      id: this.id,
+      _id: this.id,
       questions: this.questions,
       answers: this.answers,
       currentQuestionIndex: this.currentQuestionIndex,

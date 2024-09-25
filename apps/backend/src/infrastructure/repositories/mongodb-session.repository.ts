@@ -30,12 +30,12 @@ export class MongoDbSessionRepository implements ISessionRepository {
 
   private mapToEntity(document: Session): SessionEntity {
     return new SessionEntity(
-      document.id,
       document.questions.map((q) => new Question(q.text)),
       document.answers,
       document.currentQuestionIndex,
       document.startTime,
       document.endTime,
+      document._id,
     );
   }
 }
