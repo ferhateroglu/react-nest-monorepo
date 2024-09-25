@@ -19,3 +19,18 @@
     "noFallthroughCasesInSwitch": false
   }
 }
+
+// {
+//   "compilerOptions": {
+//     // ... other options
+//     "baseUrl": "./src",
+//     "paths": {
+//       "@domain/*": ["domain/*"],
+//       "@application/*": ["application/*"],
+//       "@infrastructure/*": ["infrastructure/*"],
+//       "@presentation/*": ["presentation/*"],
+//       "@config/*": ["config/*"]
+//     }
+//   }
+
+// }

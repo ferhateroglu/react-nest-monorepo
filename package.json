@@ -3,8 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm -r run dev",
+    "start": "pnpm -r run start",
+    "start:dev": "pnpm -r run start:dev",
+    "start:prod": "pnpm -r run start:prod",
     "build": "pnpm -r run build",
-    "lint": "pnpm -r run lint"
+    "lint": "pnpm -r run lint",
+    "test": "pnpm -r run test",
+    "docker:up:dev": "docker compose -f docker-compose.dev.yml up -d",
+    "docker:down:dev": "docker compose -f docker-compose.dev.yml down",
+    "docker:up:prod": "docker compose up -d",
+    "docker:down:prod": "docker compose down"
   }
 }
