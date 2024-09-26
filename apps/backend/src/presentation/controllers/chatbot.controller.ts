@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param } from "@nestjs/common";
+import { Controller, Post, Get, Body, Param, Query } from "@nestjs/common";
 import { ChatbotService } from "../../application/services/chatbot.service";
 import { CreateSessionDto } from "../../application/dtos/create-session.dto";
 import { AnswerQuestionDto } from "../../application/dtos/answer-question.dto";
@@ -7,6 +7,18 @@ import { Session } from "../../domain/entities/session.entity";
 @Controller("chatbot")
 export class ChatbotController {
   constructor(private readonly chatbotService: ChatbotService) {}
+
+  @Get("sessions")
+  async getSessions(
+    @Query("page") page: number = 1,
+    @Query("limit") limit: number = 20,
+  ): Promise<{
+    sessions: Session[];
+    meta: { totalCount: number; totalPages: number; currentPage: number; limit: number };
+  }> {
+    const sessions = await this.chatbotService.getSessions(page, limit);
+    return sessions;
+  }
 
   @Post("sessions")
   async createSession(): Promise<{ sessionId: string }> {

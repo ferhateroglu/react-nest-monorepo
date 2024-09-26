@@ -5,6 +5,11 @@ import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: "http://localhost:5173", // Your React app's URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  });
   app.useGlobalPipes(new ValidationPipe());
 
   // Set global prefix for all routes except the root

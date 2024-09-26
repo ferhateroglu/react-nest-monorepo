@@ -2,7 +2,6 @@ import { Injectable, Inject } from "@nestjs/common";
 import { ISessionRepository } from "@domain/repositories/session.repository.interface";
 import { Session } from "@domain/entities/session.entity";
 import { Question } from "@domain/value-objects/question.vo";
-import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class ChatbotService {
@@ -32,6 +31,17 @@ export class ChatbotService {
     return this.sessionRepository.findById(sessionId);
   }
 
+  async getSessions(
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<{
+    sessions: Session[];
+    meta: { totalCount: number; totalPages: number; currentPage: number; limit: number };
+  }> {
+    const skip = (page - 1) * limit;
+    return this.sessionRepository.findAll(skip, limit);
+  }
+
   async getNextQuestion(sessionId: string): Promise<Question | null> {
     const session = await this.sessionRepository.findById(sessionId);
     if (!session) {
@@ -55,5 +65,9 @@ export class ChatbotService {
       throw new Error("Session not found");
     }
     return session.isCompleted();
+  }
+
+  async _getSessionsCount(): Promise<number> {
+    return this.sessionRepository.countDocuments();
   }
 }

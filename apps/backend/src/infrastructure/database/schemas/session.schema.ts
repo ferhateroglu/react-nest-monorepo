@@ -8,7 +8,7 @@ export type SessionDocument = Session & Document;
 
 @Schema()
 export class Session {
-  @Prop({ type: String, default: () => uuid(), unique: true })
+  @Prop({ default: uuid })
   _id: string;
 
   @Prop({ type: [{ text: String }], required: true })
